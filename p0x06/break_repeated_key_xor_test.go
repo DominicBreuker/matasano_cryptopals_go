@@ -1,17 +1,16 @@
 package p0x06
 
 import (
-	"encoding/base64"
-	"fmt"
-	"io/ioutil"
 	"log"
 	"math"
 	"reflect"
 	"testing"
+
+	"github.com/dominicbreuker/matasano_cryptopals_go/utils"
 )
 
 func TestBreak(t *testing.T) {
-	c := MustGetCiphertext()
+	c := utils.MustReadBase64File("data.txt")
 
 	actual := Break(c, 2, 40)
 
@@ -48,7 +47,7 @@ func TestScoreKeySize(t *testing.T) {
 }
 
 func TestGuessKeysize(t *testing.T) {
-	c := MustGetCiphertext()
+	c := utils.MustReadBase64File("data.txt")
 
 	actual := guessKeysize(c, 3, 40)
 
@@ -78,29 +77,4 @@ func TestEditDistanceDifferentBufferSize(t *testing.T) {
 	if err == nil {
 		t.Fatalf("Can't compute edit distance of buffers with differing length, but got no error")
 	}
-}
-
-// ##################
-// ### Test utils ###
-// ##################
-
-func MustGetCiphertext() []byte {
-	data := MustReadTestData()
-	return MustBase64Decode(data)
-}
-
-func MustReadTestData() []byte {
-	data, err := ioutil.ReadFile("data.txt")
-	if err != nil {
-		panic(fmt.Sprintf("Test file could not be read: %v", err))
-	}
-	return data
-}
-
-func MustBase64Decode(b []byte) []byte {
-	b, err := base64.StdEncoding.DecodeString(string(b))
-	if err != nil {
-		panic(fmt.Sprintf("Test data could not be base64-decoded: %v", err))
-	}
-	return b
 }

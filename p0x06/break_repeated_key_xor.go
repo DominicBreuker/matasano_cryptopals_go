@@ -9,6 +9,7 @@ import (
 	"github.com/dominicbreuker/matasano_cryptopals_go/p0x03"
 )
 
+// Break estimates a keysize and uses it to decrypt the given ciphertext, assuming a repeated key XOR cipher
 func Break(c []byte, min, max int) []byte {
 	ks := guessKeysize(c, min, max)
 
